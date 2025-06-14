@@ -1,0 +1,80 @@
+/* Reset margin and padding, and set box-sizing globally */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ensure the body and HTML take full height */
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif; /* Optional: set a default font */
+}
+
+/* Style the nav */
+nav {
+  padding: 1rem; /* Add some padding for better spacing */
+  width: 100%;
+  position: fixed; /* Fix the nav at the top */
+  top: 0;
+  left: 0;
+  z-index: 1000; /* Ensure it stays above other content */
+}
+
+/* Set up the nav list */
+.nav-list {
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+  padding: 0;
+  margin: 0;
+}
+
+/* Style individual nav items */
+.nav-list li {
+  background-color: #5a5a55; /* Light background for items */
+  margin: 0 10px; /* Horizontal margin between items */
+  padding: 10px 20px; /* Padding for better spacing */
+  list-style: none;
+  border-radius: 10px;
+}
+
+/* Style links */
+.nav-list li a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+  display: block; /* Make the link fill the li for better click area */
+}
+
+/* Hover effect for nav items */
+.nav-list li:hover {
+  color: #fff;
+  background-color: #d6e074;
+}
+
+/* Active state for nav items */
+.nav-list li:active {
+  color: #fff;
+  background-color: #80882b;
+}
+
+/* Add spacing for main content */
+.main-content {
+  padding: 2rem;
+  margin-top: 70px; /* Give room for the fixed nav */
+  height: calc(100vh - 70px); /* Ensure content takes full height minus nav */
+  box-sizing: border-box;
+  overflow-x: hidden; /* Prevent horizontal overflow */
+}
+
+/* Optional: add responsiveness */
+@media (max-width: 768px) {
+  .nav-list {
+    flex-direction: column; /* Stack items vertically on smaller screens */
+    align-items: center;
+  }
+
+  .nav-list li {
+    margin: 10px 0;
+  }
+}
