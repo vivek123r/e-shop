@@ -14,11 +14,22 @@ body, html {
 /* Style the nav */
 nav {
   padding: 1rem; /* Add some padding for better spacing */
-  width: 100%;
+  width: 40%;
   position: fixed; /* Fix the nav at the top */
   top: 0;
   left: 0;
   z-index: 1000; /* Ensure it stays above other content */
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+/* Nav with toggle button */
+nav.with-toggle {
+  justify-content: space-between;
 }
 
 /* Set up the nav list */
@@ -27,15 +38,19 @@ nav {
   justify-content: flex-end; /* Align items to the right */
   padding: 0;
   margin: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: right center;
 }
 
 /* Style individual nav items */
 .nav-list li {
-  background-color: #5a5a55; /* Light background for items */
+  background-color: #4a90e2;
   margin: 0 10px; /* Horizontal margin between items */
   padding: 10px 20px; /* Padding for better spacing */
   list-style: none;
   border-radius: 10px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 /* Style links */
@@ -49,14 +64,44 @@ nav {
 /* Hover effect for nav items */
 .nav-list li:hover {
   color: #fff;
-  background-color: #d6e074;
+  background-color: #3a7bc8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Active state for nav items */
 .nav-list li:active {
   color: #fff;
-  background-color: #80882b;
+  background-color: #2d6cb5;
 }
+
+/* Menu toggle button */
+.menu-toggle {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 10px;
+  z-index: 1001; /* Ensure it's above other elements */
+  background-color: #4a90e2;
+  border-radius: 50%; /* Make it round */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: white; /* Change to white for better contrast */
+  border-radius: 3px;
+}
+
+.nav-list.hidden {
+  display: none;
+}
+
 
 /* Add spacing for main content */
 .main-content {
@@ -67,14 +112,14 @@ nav {
   overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
-/* Optional: add responsiveness */
+/* Responsive styles */
 @media (max-width: 768px) {
-  .nav-list {
-    flex-direction: column; /* Stack items vertically on smaller screens */
-    align-items: center;
+  nav {
+    width: 100%;
+    border-radius: 0;
   }
-
+  
   .nav-list li {
-    margin: 10px 0;
+    margin: 5px;
   }
 }

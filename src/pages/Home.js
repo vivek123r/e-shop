@@ -31,6 +31,11 @@ const Home = () => {
         <h1>E-SHOP</h1>
         <p>Your one-stop shop for all your needs!</p>
         <p>Shop now and enjoy great deals!</p>
+        <div className='Tailers'>
+          <h2>Tailers</h2>
+          <p>we are hiring tailers for our store</p>
+          <button onClick={() => navigate('/tailers')}>Apply Now</button>
+        </div>
       </div>
 
       <div className="right-panel">

@@ -4,26 +4,31 @@
   height: 100vh;
   width: 100%;
   font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 /* Left panel with text */
 .left-panel {
   flex: 1;
+  
   padding: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: #3e3e3e;
+  color: #2d3748;
 }
 
 .left-panel h1 {
   font-size: 4rem;
   margin-bottom: 20px;
+  color: #2d3748;
 }
+
 
 .left-panel p {
   font-size: 1.5rem;
-  margin: 10px 0;
+  margin: 10px 90px;
+  color: #4a5568;
 }
 
 /* Right panel with big category images */
@@ -35,12 +40,13 @@
   gap: 20px;
   margin-top: 60px;
   padding: 40px;
-  background: #f1f1c7;
+  background: #ffffff;
   align-content: start;
   justify-content: center;
   border-radius: 20px;
   height: 92vh;
   overflow-y: auto; /* <- allow scrolling */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -74,16 +80,53 @@
   bottom: 15px;
   left: 15px;
   padding: 10px 20px;
-  background-color: #7e7e7e;
+  background-color: #4a90e2;
   border: none;
   color: white;
   font-weight: bold;
   font-size: 1.1rem;
   border-radius: 8px;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .category-tile button:hover {
-  background-color: #d6e074;
+  background-color: #3a7bc8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Tailers */
+.Tailers {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.Tailers h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #2d3748;
+}
+.Tailers p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #4a5568;
+}
+.Tailers button {
+  padding: 10px 20px;
+  background-color: #4a90e2;
+  border: none;
   color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.Tailers button:hover {
+  background-color: #3a7bc8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
