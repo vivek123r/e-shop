@@ -27,7 +27,7 @@ docker run -p 3000:3000 my-react-app
 2. Create repository: `my-react-app` ✅
 3. Add secrets to GitHub: ✅
    - `DOCKER_USERNAME`: `viv123r`
-   - `DOCKER_PASSWORD`: `dckr_pat_73sudgPZs3rV-uaLuwDauu9BUKA`
+   - `DOCKER_PASSWORD`: `[your-docker-token-from-docker-hub]`
 
 ### **Step 3: Push to GitHub**
 ```bash
