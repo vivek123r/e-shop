@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: my-react-app
-        image: your-docker-username/my-react-app:latest
+        image: viv123r/my-react-app:latest
         ports:
         - containerPort: 3000
         env:
