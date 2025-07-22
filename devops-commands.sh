@@ -12,8 +12,8 @@ echo ""
 
 # Milestone 5: Container Registry
 echo "🏭 DOCKER HUB COMMANDS:"
-echo "docker tag my-react-app YOUR_USERNAME/my-react-app:latest"
-echo "docker push YOUR_USERNAME/my-react-app:latest"
+echo "docker tag my-react-app viv123r/my-react-app:latest"
+echo "docker push viv123r/my-react-app:latest"
 echo ""
 
 # Milestone 6: Kubernetes
