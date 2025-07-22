@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useCart } from '../../contexts/CartContext';
 import '../css/Cart.css';
 
 function Cart() {
     const location = useLocation();
     const navigate = useNavigate();
-    const [cartItems, setCartItems] = useState([]);
-    const [quantities, setQuantities] = useState([1]);
+    const { cartItems, removeFromCart, updateQuantity, getCartTotal, loading } = useCart();
     const [showContinueShopping, setShowContinueShopping] = useState(true);
     
     // Add scroll event listener to hide/show continue shopping button
@@ -23,30 +23,10 @@ function Cart() {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-    
-    useEffect(() => {
-        // Get cart items from location state
-        if (location.state && location.state.cartItems) {
-            setCartItems(location.state.cartItems);
-        }
-    }, [location]);
 
-    const removeItem = (index) => {
-        const newCartItems = [...cartItems];
-        newCartItems.splice(index, 1);
-        setCartItems(newCartItems);
-    };
-
-    const calculateItemsTotal = () => {
-        // Calculate total based on quantity of each item
-        return cartItems.reduce((total, _, index) => {
-            return total + (quantities[index] || 1) * 19.99;
-        }, 0).toFixed(2);
-    };
-    
-    const calculateTotal = () => {
-        return parseFloat(calculateItemsTotal()).toFixed(2);
-    };
+    if (loading) {
+        return <div>Loading cart...</div>;
+    }
 
     return (
         <motion.div
@@ -79,17 +59,15 @@ function Cart() {
                         {cartItems.map((item, index) => (
                             <div key={index} className="cart-item">
                                 <div className="item-image">
-                                    <img src={item} alt={`Cart item ${index + 1}`} />
+                                    <img src={item.imageUrl} alt={`Cart item ${index + 1}`} />
                                 </div>
                                 <div className="item-details">
                                     <h3>Item #{index + 1}</h3>
                                     <p className="item-price">$19.99</p>
                                     <div className="item-quantity">
                                         <label>Quantity:</label>
-                                        <select defaultValue="1" onChange={(e) => {
-                                                const newQuantities = {...quantities};
-                                                newQuantities[index] = parseInt(e.target.value);
-                                                setQuantities(newQuantities);
+                                        <select value={item.quantity || 1} onChange={(e) => {
+                                                updateQuantity(item.id, parseInt(e.target.value));
                                             }}>
                                             {[1, 2, 3, 4, 5].map(num => (
                                                 <option key={num} value={num}>{num}</option>
@@ -99,7 +77,7 @@ function Cart() {
                                 </div>
                                 <button 
                                     className="remove-button"
-                                    onClick={() => removeItem(index)}
+                                    onClick={() => removeFromCart(item)}
                                 >
                                     ✕
                                 </button>
@@ -111,8 +89,8 @@ function Cart() {
                         <h2>Order Summary</h2>
                         {cartItems.map((item, index) => (
                             <div key={index} className="summary-item-row">
-                                <span>Item #{index + 1} × {quantities[index] || 1}</span>
-                                <span>${((quantities[index] || 1) * 19.99).toFixed(2)}</span>
+                                <span>Item #{index + 1} × {item.quantity || 1}</span>
+                                <span>${((item.quantity || 1) * 19.99).toFixed(2)}</span>
                             </div>
                         ))}
                         <div className="summary-row">
@@ -121,7 +99,7 @@ function Cart() {
                         </div>
                         <div className="summary-row total">
                             <span>Total:</span>
-                            <span>${calculateTotal()}</span>
+                            <span>${getCartTotal()}</span>
                         </div>
                         <button className="checkout-button">
                             Proceed to Checkout

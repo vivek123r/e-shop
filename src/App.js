@@ -6,37 +6,45 @@ import Blogs from "./pages/Blogs";
 import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Clothes from "./pages/screens/Clothes";
-import Books from "./pages/screens/Books";
-import Electronics from "./pages/screens/Electronics";
-import Accessories from "./pages/screens/Accessories";
-import Shoes from "./pages/screens/Shoes";
-import Toys from "./pages/screens/Toys";
+import Modern from "./pages/screens/Modern";
+import Classy from "./pages/screens/Classy";
+import Wedding from "./pages/screens/Wedding";
+import Casual from "./pages/screens/Casual";
+import Kids from "./pages/screens/Kids";
 import Cart from "./pages/screens/cart";
 import Tailers from "./pages/screens/Tailers";
 import Login from "./pages/screens/login";
+import { AuthProvider } from "./contexts/AuthContext";
+import { CartProvider } from "./contexts/CartContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 import './App.css';
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
+    <AuthProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+        
           <Route index element={<Home />} />
           <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
-          {/* Category Routes */}
-          <Route path="clothes" element={<Clothes />} />
+          {/* Clothing Style Categories - Protected */}
+          <Route path="clothes" element={<ProtectedRoute><Clothes /></ProtectedRoute>} />
+          <Route path="modern" element={<ProtectedRoute><Modern /></ProtectedRoute>} />
+          <Route path="classy" element={<ProtectedRoute><Classy /></ProtectedRoute>} />
+          <Route path="wedding" element={<ProtectedRoute><Wedding /></ProtectedRoute>} />
+          <Route path="casual" element={<ProtectedRoute><Casual /></ProtectedRoute>} />
+          <Route path="kids" element={<ProtectedRoute><Kids /></ProtectedRoute>} />
           <Route path="Login" element={<Login />} />
-          <Route path="books" element={<Books />} />
-          <Route path="electronics" element={<Electronics />} />
-          <Route path="accessories" element={<Accessories />} />
-          <Route path="shoes" element={<Shoes />} />
-          <Route path="toys" element={<Toys />} />
-          <Route path="cart" element={<Cart />} />
+          <Route path="cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
           <Route path="tailers" element={<Tailers />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
+    </CartProvider>
+    </AuthProvider>
   )
 }
 export default App;

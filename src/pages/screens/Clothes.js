@@ -3,19 +3,20 @@ import '../css/Clothes.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
+import { useCart } from '../../contexts/CartContext';
 
 
 const Clothes = () => {
   const [clothes, setClothes] = useState({});
   const [alignLeft, setAlignLeft] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const { cartItems, addToCart, getCartItemCount } = useCart();
   let navigate = useNavigate();
   const categoryViewRef = useRef(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/items/clothes')
+    fetch('http://localhost:5000/api/items/clothes')
       .then((response) => response.json())
       .then((data) => setClothes(data))
       .catch((error) => console.error('Error fetching clothes:', error));
@@ -24,9 +25,6 @@ const Clothes = () => {
   const clothClick = (imageUrl) => {
     setAlignLeft(true);
     setSelectedImage(imageUrl);
-  }
-  const addToCart = (image) => {
-    setCartItems([...cartItems, image]);
   }
   
   // Extract product details from filename
@@ -148,8 +146,8 @@ const Clothes = () => {
         e.preventDefault();
         const droppedimage = e.dataTransfer.getData('text/plain');
         if (droppedimage) {
-          alert(`Added to cart: ${droppedimage}`);
-          setCartItems([...cartItems, droppedimage]); 
+          addToCart(droppedimage);
+          alert(`Added to cart!`); 
 
         }
       }}
@@ -158,10 +156,10 @@ const Clothes = () => {
         e.dataTransfer.dropEffect = 'copy';
       }}
       onClick={() => {
-        navigate('/cart', { state: { cartItems } });
+        navigate('/cart');
       }}
       >
-      🛒 Cart {cartItems.length} </button>
+      🛒 Cart {getCartItemCount()} </button>
       <button>profile</button>
     </div>
     {selectedCategory && !selectedImage && (

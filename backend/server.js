@@ -10,12 +10,11 @@ app.use(cors());
 
 // Serve static files from BOTH directories
 app.use('/images', express.static(path.join(__dirname, 'item-lists')));
-
 app.use('/items', express.static(path.join(__dirname, 'items')));
 
 // Endpoint to get pants images
 // General endpoint to get images for any clothes category
-app.get('/items/clothes', (req, res) => {
+app.get('/api/items/clothes', (req, res) => {
   const clothesBaseDir = path.join(__dirname, 'items/clothes');
 
   fs.readdir(clothesBaseDir, (err, categories) => {
@@ -50,7 +49,6 @@ app.get('/items/clothes', (req, res) => {
     });
   });
 });
-
 
 // Endpoint to get item-list images (if needed)
 app.get('/item-lists', (req, res) => {

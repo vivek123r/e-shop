@@ -3,19 +3,19 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 const categories = [
-  { name: 'Clothes', img: 'http://localhost:5000/images/clothes.jpg' },
-  { name: 'Electronics', img: 'http://localhost:5000/images/headphones.webp' },
-  { name: 'Accessories', img: 'http://localhost:5000/images/accessories.jpg' },
-  { name: 'Shoes', img: 'http://localhost:5000/images/shoes.webp' },
-  { name: 'Books', img: 'http://localhost:5000/images/books.avif' },
-  { name: 'Toys', img: 'http://localhost:5000/images/toys.webp' },
+  { name: 'clothes', img: 'http://localhost:5000/images/clothes.jpg', label: 'All Clothes' },
+  { name: 'modern', img: 'http://localhost:5000/images/headphones.webp', label: 'Modern' },
+  { name: 'classy', img: 'http://localhost:5000/images/accessories.jpg', label: 'Classy' },
+  { name: 'wedding', img: 'http://localhost:5000/images/shoes.webp', label: 'Wedding' },
+  { name: 'casual', img: 'http://localhost:5000/images/books.avif', label: 'Casual' },
+  { name: 'kids', img: 'http://localhost:5000/images/toys.webp', label: 'Kids' },
 ];
 
 const Home = () => {
   const navigate = useNavigate();
 
   const handleClick = (category) => {
-    navigate(`/${category}`); // navigates to /clothes, /books, etc.
+    navigate(`/${category.name}`); // navigates to /clothes, /modern, etc.
   };
 
   return (
