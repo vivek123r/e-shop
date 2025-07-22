@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  # React frontend
+  frontend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  # Express backend (if you want to containerize it too)
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    depends_on:
+      - frontend
+
+networks:
+  default:
+    name: my-app-network
