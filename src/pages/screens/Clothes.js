@@ -15,8 +15,10 @@ const Clothes = () => {
   let navigate = useNavigate();
   const categoryViewRef = useRef(null);
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   useEffect(() => {
-    fetch('http://localhost:5000/api/items/clothes')
+    fetch(`${API_URL}/api/items/clothes`)
       .then((response) => response.json())
       .then((data) => setClothes(data))
       .catch((error) => console.error('Error fetching clothes:', error));

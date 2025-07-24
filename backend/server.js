@@ -8,6 +8,11 @@ const PORT = 5000;
 
 app.use(cors());
 
+// Health check endpoint for Kubernetes
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
 // Serve static files from BOTH directories
 app.use('/images', express.static(path.join(__dirname, 'item-lists')));
 app.use('/items', express.static(path.join(__dirname, 'items')));

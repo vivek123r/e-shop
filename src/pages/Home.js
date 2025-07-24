@@ -2,13 +2,15 @@ import './css/Home.css';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const categories = [
-  { name: 'clothes', img: 'http://localhost:5000/images/clothes.jpg', label: 'All Clothes' },
-  { name: 'modern', img: 'http://localhost:5000/images/headphones.webp', label: 'Modern' },
-  { name: 'classy', img: 'http://localhost:5000/images/accessories.jpg', label: 'Classy' },
-  { name: 'wedding', img: 'http://localhost:5000/images/shoes.webp', label: 'Wedding' },
-  { name: 'casual', img: 'http://localhost:5000/images/books.avif', label: 'Casual' },
-  { name: 'kids', img: 'http://localhost:5000/images/toys.webp', label: 'Kids' },
+  { name: 'clothes', img: `${API_URL}/images/clothes.jpg`, label: 'All Clothes' },
+  { name: 'modern', img: `${API_URL}/images/headphones.webp`, label: 'Modern' },
+  { name: 'classy', img: `${API_URL}/images/accessories.jpg`, label: 'Classy' },
+  { name: 'wedding', img: `${API_URL}/images/shoes.webp`, label: 'Wedding' },
+  { name: 'casual', img: `${API_URL}/images/books.avif`, label: 'Casual' },
+  { name: 'kids', img: `${API_URL}/images/toys.webp`, label: 'Kids' },
 ];
 
 const Home = () => {
