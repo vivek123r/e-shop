@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 import "../css/Login.css";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    // Pre-filled with test user credentials for easy login
+    const [email, setEmail] = useState('test@example.com');
+    const [password, setPassword] = useState('password123');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [displayName, setDisplayName] = useState('');
+    const [displayName, setDisplayName] = useState('TestUser');
     const [isSignup, setIsSignup] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -51,7 +52,30 @@ const Login = () => {
             
             navigate('/');
         } catch (error) {
-            setError('Failed to ' + (isSignup ? 'create account' : 'log in') + ': ' + error.message);
+            console.error("Authentication error:", error);
+            let errorMessage;
+            
+            switch(error.code) {
+                case 'auth/api-key-not-valid':
+                    errorMessage = 'Firebase API key is invalid. Please check your configuration.';
+                    break;
+                case 'auth/user-not-found':
+                    errorMessage = 'No user found with this email address.';
+                    break;
+                case 'auth/wrong-password':
+                    errorMessage = 'Incorrect password.';
+                    break;
+                case 'auth/email-already-in-use':
+                    errorMessage = 'Email is already in use by another account.';
+                    break;
+                case 'auth/weak-password':
+                    errorMessage = 'Password should be at least 6 characters.';
+                    break;
+                default:
+                    errorMessage = error.message || 'An unknown error occurred.';
+            }
+            
+            setError('Failed to ' + (isSignup ? 'create account' : 'log in') + ': ' + errorMessage);
         }
         
         setLoading(false);

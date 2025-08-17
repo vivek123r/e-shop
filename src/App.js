@@ -16,13 +16,14 @@ import Tailers from "./pages/screens/Tailers";
 import Login from "./pages/screens/login";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
-import ProtectedRoute from "./components/ProtectedRoute";
+import AuthDebug from "./components/AuthDebug";
 import './App.css';
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
         <BrowserRouter>
+          <AuthDebug />
           <Routes>
             <Route path="/" element={<Layout />}>
         
@@ -30,14 +31,14 @@ function App() {
           <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
           {/* Clothing Style Categories - Protected */}
-          <Route path="clothes" element={<ProtectedRoute><Clothes /></ProtectedRoute>} />
-          <Route path="modern" element={<ProtectedRoute><Modern /></ProtectedRoute>} />
-          <Route path="classy" element={<ProtectedRoute><Classy /></ProtectedRoute>} />
-          <Route path="wedding" element={<ProtectedRoute><Wedding /></ProtectedRoute>} />
-          <Route path="casual" element={<ProtectedRoute><Casual /></ProtectedRoute>} />
-          <Route path="kids" element={<ProtectedRoute><Kids /></ProtectedRoute>} />
+          <Route path="clothes" element={<Clothes />} />
+          <Route path="modern" element={<Modern />} />
+          <Route path="classy" element={<Classy />} />
+          <Route path="wedding" element={<Wedding />} />
+          <Route path="casual" element={<Casual />} />
+          <Route path="kids" element={<Kids />} />
           <Route path="Login" element={<Login />} />
-          <Route path="cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+          <Route path="cart" element={<Cart />} />
           <Route path="tailers" element={<Tailers />} />
           <Route path="*" element={<NoPage />} />
         </Route>

@@ -18,11 +18,24 @@ const Clothes = () => {
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
   useEffect(() => {
+    console.log("Fetching clothes data from:", `${API_URL}/api/items/clothes`);
     fetch(`${API_URL}/api/items/clothes`)
-      .then((response) => response.json())
-      .then((data) => setClothes(data))
-      .catch((error) => console.error('Error fetching clothes:', error));
-  }, []);
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Clothes data received:", Object.keys(data));
+        setClothes(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching clothes:', error);
+        // Set empty data if there's an error
+        setClothes({});
+      });
+  }, [API_URL]);
 
   const clothClick = (imageUrl) => {
     setAlignLeft(true);

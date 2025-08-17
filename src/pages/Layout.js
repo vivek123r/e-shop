@@ -44,7 +44,7 @@ const Layout = () => {
           <li>
             <Link to="/">Home</Link>
           </li>
-          {currentUser && location.pathname !== '/' ? (
+          {currentUser ? (
             <>
               <li>
                 <Link to="/clothes">Shop</Link>
@@ -53,11 +53,11 @@ const Layout = () => {
                 <Link to="/cart">Cart</Link>
               </li>
             </>
-          ) : !currentUser ? (
+          ) : (
             <li>
               <Link to="/Login">Login</Link>
             </li>
-          ) : null}
+          )}
           <li>
             <Link to="/blogs">Blogs</Link>
           </li>

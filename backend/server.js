@@ -8,7 +8,7 @@ const PORT = 5000;
 
 app.use(cors());
 
-// Health check endpoint for Kubernetes
+// Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
 });

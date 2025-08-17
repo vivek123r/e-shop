@@ -17,7 +17,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   const handleClick = (category) => {
-    navigate(`/${category.name}`); // navigates to /clothes, /modern, etc.
+    navigate(`/${category}`); // navigates to /clothes, /modern, etc.
   };
 
   return (
@@ -44,7 +44,7 @@ const Home = () => {
         {categories.map((item) => (
           <div key={item.name} className="category-tile">
             <img src={item.img} alt={item.name} />
-            <button onClick={() => handleClick(item.name)}>{item.name}</button>
+            <button onClick={() => handleClick(item.name)}>{item.label}</button>
           </div>
         ))}
       </div>

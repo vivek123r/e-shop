@@ -1,0 +1,39 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { setupTestUser } from './firebase/testUser';
+
+// Get ready to render the app
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+
+// Create test user before starting the app
+async function initApp() {
+  try {
+    // Setup test user
+    const testUser = await setupTestUser();
+    console.log('Test user available:', testUser.email);
+    
+    // Now import and render the app
+    const { default: App } = await import('./App');
+    
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+  } catch (error) {
+    console.error('Error initializing app:', error);
+    
+    // Render error message if Firebase setup fails
+    root.render(
+      <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+        <h1>Error Starting App</h1>
+        <p>There was an error connecting to Firebase. Please check your configuration.</p>
+        <pre>{error.message}</pre>
+      </div>
+    );
+  }
+}
+
+// Start the app
+initApp();
