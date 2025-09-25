@@ -4,7 +4,6 @@ import { useAuth } from '../contexts/AuthContext';
 import './css/Layout.css';
 
 const Layout = () => {
-  const [isMenuVisible, setIsMenuVisible] = useState(true);
   const location = useLocation();
   const { currentUser, logout } = useAuth();
 
@@ -17,30 +16,12 @@ const Layout = () => {
     }
   };
 
-  // Function to toggle the menu visibility
-  const toggleMenu = () => {
-    setIsMenuVisible(!isMenuVisible);
-  };
-
-  // Effect to handle route changes
-  useEffect(() => {
-    // On home page, always show the menu
-    // On other pages, hide the menu initially
-    setIsMenuVisible(location.pathname === '/');
-  }, [location.pathname]);
-
   return (
     <>
-      <nav className={location.pathname !== '/' ? 'with-toggle' : ''}>
-        {location.pathname !== '/' && (
-          <div className="menu-toggle" onClick={toggleMenu}>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        )}
+      <nav>
+        <Link to="/" className="brand">E-SHOP</Link>
         
-        <ul className={`nav-list ${!isMenuVisible ? 'hidden' : ''}`}>
+        <ul className="nav-list">
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -69,10 +50,10 @@ const Layout = () => {
           </li>
         </ul>
         
-        {/* User info and logout - only on home page, positioned on the right */}
-        {currentUser && location.pathname === '/' && (
+        {/* User info and logout */}
+        {currentUser && (
           <div className="user-controls">
-            <span className="user-info">Hello, {currentUser.displayName || currentUser.email}</span>
+            <span className="user-info">{currentUser.displayName || currentUser.email}</span>
             <button onClick={handleLogout} className="logout-btn">Logout</button>
           </div>
         )}

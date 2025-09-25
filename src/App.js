@@ -1,5 +1,5 @@
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Blogs from "./pages/Blogs";
@@ -17,20 +17,20 @@ import Login from "./pages/screens/login";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 import AuthDebug from "./components/AuthDebug";
+import { AnimatePresence } from "framer-motion";
 import './App.css';
-function App() {
+// Animated page transition wrapper
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  
   return (
-    <AuthProvider>
-      <CartProvider>
-        <BrowserRouter>
-          <AuthDebug />
-          <Routes>
-            <Route path="/" element={<Layout />}>
-        
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
-          {/* Clothing Style Categories - Protected */}
+          {/* Clothing Style Categories */}
           <Route path="clothes" element={<Clothes />} />
           <Route path="modern" element={<Modern />} />
           <Route path="classy" element={<Classy />} />
@@ -43,8 +43,19 @@ function App() {
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
-    </CartProvider>
+    </AnimatePresence>
+  );
+};
+
+function App() {
+  return (
+    <AuthProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <AuthDebug />
+          <AnimatedRoutes />
+        </BrowserRouter>
+      </CartProvider>
     </AuthProvider>
   )
 }

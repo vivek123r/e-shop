@@ -1,93 +1,138 @@
-/* Layout container */
-.home-main {
-  display: flex;
-  height: 100vh;
+/* Modern Home Page Styling */
+.home-container {
+  min-height: 100vh;
   width: 100%;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-}
-
-/* Left panel with text */
-.left-panel {
-  flex: 1;
-  
-  padding: 80px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  color: #2d3748;
+  overflow-x: hidden;
+  background-color: var(--background-color);
+  padding-top: 80px; /* Space for the navbar */
 }
 
-.left-panel h1 {
-  font-size: 4rem;
-  margin-bottom: 20px;
-  color: #2d3748;
-}
-
-
-.left-panel p {
-  font-size: 1.5rem;
-  margin: 10px 90px;
-  color: #4a5568;
-}
-
-/* Right panel with big category images */
-.right-panel {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 200px;
-  gap: 20px;
-  margin-top: 60px;
-  padding: 40px;
-  background: #ffffff;
-  align-content: start;
-  justify-content: center;
-  border-radius: 20px;
-  height: 92vh;
-  overflow-y: auto; /* <- allow scrolling */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-
-
-/* Each category block */
-.category-tile {
+/* Hero Section */
+.hero-section {
   position: relative;
+  height: 80vh;
   width: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), 
+              url('../../assets/background.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 10%;
+  margin-bottom: 50px;
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.hero-section h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+}
+
+.cta-button {
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 15px 35px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 25px rgba(67, 97, 238, 0.4);
+}
+
+
+
+/* Categories Section */
+.categories-section {
+  padding: 30px 8%;
+  margin-bottom: 60px;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 30px;
+  text-align: center;
+  position: relative;
+}
+
+.section-title:after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: var(--primary-color);
+  margin: 15px auto 0;
+  border-radius: 2px;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+/* Category Cards */
+.category-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+.category-image-container {
   height: 200px;
   overflow: hidden;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
 }
 
-.category-tile:hover {
-  transform: scale(1.05);
-}
-
-/* Category image */
-.category-tile img {
+.category-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 16px;
+  transition: transform 0.5s ease;
 }
 
-/* Overlay button */
-.category-tile button {
-  position: absolute;
-  bottom: 15px;
-  left: 15px;
-  padding: 10px 20px;
-  background-color: #4a90e2;
-  border: none;
-  color: white;
-  font-weight: bold;
-  font-size: 1.1rem;
-  border-radius: 8px;
+.category-card:hover .category-image {
+  transform: scale(1.1);
+}
+
+.category-name {
+  padding: 15px 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-color);
+  text-align: center;
+  background: white;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .category-tile button:hover {
@@ -96,37 +141,78 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Tailers */
-.Tailers {
-  margin-top: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.Tailers h2 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  color: #2d3748;
-}
-.Tailers p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  color: #4a5568;
-}
-.Tailers button {
-  padding: 10px 20px;
-  background-color: #4a90e2;
-  border: none;
+/* Tailers Section */
+.tailers-section {
+  padding: 60px 8%;
+  background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
   color: white;
-  font-weight: bold;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
 }
-.Tailers button:hover {
-  background-color: #3a7bc8;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+
+.tailers-content {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tailers-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: white;
+  font-weight: 700;
+}
+
+.tailers-section p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+}
+
+.tailers-section button {
+  background-color: white;
+  color: var(--primary-color);
+  padding: 14px 30px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.tailers-section button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 0 5%;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .categories-section {
+    padding: 20px 5%;
+  }
+  
+  .categories-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .tailers-section {
+    padding: 40px 5%;
+  }
 }

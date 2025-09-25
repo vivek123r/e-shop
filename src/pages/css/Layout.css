@@ -8,106 +8,101 @@
 /* Ensure the body and HTML take full height */
 body, html {
   height: 100%;
-  font-family: Arial, sans-serif; /* Optional: set a default font */
+  font-family: 'Poppins', sans-serif;
 }
 
-/* Style the nav */
+/* Modern Navigation Style */
 nav {
-  padding: 1rem; /* Add some padding for better spacing */
-  width: 40%;
-  position: fixed; /* Fix the nav at the top */
+  padding: 1.2rem 2rem;
+  width: 100%;
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000; /* Ensure it stays above other content */
-  background-color: transparent;
-  box-shadow: none;
-  border-radius: 20px;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
 }
 
-/* Nav with toggle button */
-nav.with-toggle {
-  justify-content: space-between;
+/* Brand/Logo Area */
+.brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
 }
 
 /* Set up the nav list */
 .nav-list {
   display: flex;
-  justify-content: flex-end; /* Align items to the right */
+  align-items: center;
   padding: 0;
   margin: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  transform-origin: right center;
 }
 
 /* Style individual nav items */
 .nav-list li {
-  background-color: #4a90e2;
-  margin: 0 10px; /* Horizontal margin between items */
-  padding: 10px 20px; /* Padding for better spacing */
+  margin: 0 8px;
   list-style: none;
-  border-radius: 10px;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
   transition: all 0.3s ease;
 }
 
 /* Style links */
 .nav-list li a {
   text-decoration: none;
-  color: #ffffff;
-  font-weight: bold;
-  display: block; /* Make the link fill the li for better click area */
+  color: #333;
+  font-weight: 600;
+  padding: 10px 16px;
+  display: block;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 /* Hover effect for nav items */
-.nav-list li:hover {
-  color: #fff;
-  background-color: #3a7bc8;
+.nav-list li a:hover {
+  color: var(--primary-color);
+  background-color: rgba(67, 97, 238, 0.1);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Active state for nav items */
-.nav-list li:active {
-  color: #fff;
-  background-color: #2d6cb5;
+.nav-list li a.active {
+  color: var(--primary-color);
+  background-color: rgba(67, 97, 238, 0.15);
 }
 
-/* Menu toggle button */
-.menu-toggle {
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 10px;
-  z-index: 1001; /* Ensure it's above other elements */
-  background-color: #4a90e2;
-  border-radius: 50%; /* Make it round */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+/* Navigation spacing */
+nav {
+  justify-content: space-between;
 }
 
-.menu-toggle span {
-  display: block;
-  width: 100%;
-  height: 3px;
-  background-color: white; /* Change to white for better contrast */
-  border-radius: 3px;
+.menu-toggle:hover span {
+  background-color: var(--primary-color);
 }
 
-.nav-list.hidden {
-  display: none;
+/* When menu is open or toggle is active */
+.menu-toggle.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
 }
 
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
 
 /* Add spacing for main content */
 .main-content {
   padding: 2rem;
-  margin-top: 70px; /* Give room for the fixed nav */
-  height: calc(100vh - 70px); /* Ensure content takes full height minus nav */
+  margin-top: 80px; /* Give room for the fixed nav */
+  min-height: calc(100vh - 80px); /* Ensure content takes full height minus nav */
   box-sizing: border-box;
   overflow-x: hidden; /* Prevent horizontal overflow */
 }
@@ -115,37 +110,50 @@ nav.with-toggle {
 /* Responsive styles */
 @media (max-width: 768px) {
   nav {
-    width: 100%;
-    border-radius: 0;
+    padding: 1rem;
   }
   
-  .nav-list li {
-    margin: 5px;
+  .nav-list {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .brand {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
   }
 }
 
 /* User info and logout button styles */
 .user-controls {
-  position: fixed;
-  top: 10px;
-  right: 20px;
   display: flex;
   align-items: center;
   gap: 15px;
-  z-index: 1002; /* Higher than nav to ensure it's on top */
 }
 
 .user-info {
-  color: white;
-  font-weight: 600;
-  padding: 10px 15px;
-  background-color: #4a90e2;
-  border-radius: 10px;
+  color: #333;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-info::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #4CAF50;
+  border-radius: 50%;
+}
+
+.user-info {
   white-space: nowrap;
   max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
 }
 
 .logout-btn {

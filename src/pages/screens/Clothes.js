@@ -8,7 +8,6 @@ import { useCart } from '../../contexts/CartContext';
 
 const Clothes = () => {
   const [clothes, setClothes] = useState({});
-  const [alignLeft, setAlignLeft] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const { cartItems, addToCart, getCartItemCount } = useCart();
@@ -38,7 +37,6 @@ const Clothes = () => {
   }, [API_URL]);
 
   const clothClick = (imageUrl) => {
-    setAlignLeft(true);
     setSelectedImage(imageUrl);
   }
   
@@ -99,109 +97,182 @@ const Clothes = () => {
       }
     }, 0);
   }
+  
   return (
     <motion.div
       className="clothes-main"
-      initial={{ opacity: 0, y: '100vh' }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: '-100vh' }}
-      transition={{ duration: 1.0, ease: "easeInOut" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
     >
-      <div className='head'>
-        <img src={require('../../assets/iconFashion.jpg')} alt="icon" />
-        <h1>Clothes</h1>
+      <div className='shop-header'>
+        <h1>Shop Collection</h1>
+        <p className="shop-description">Discover our latest styles and find your perfect fit</p>
       </div>
 
-      <div className={`clothes-wrapper ${alignLeft ? 'align-left' : ''}`}>
-  <div className="clothes-categories">
-    <div className='pants' onClick={() => wideScreen("pants")}>
-      <h2>Pants</h2>
-      {(clothes.pants || []).map((image, index) => (
-        <img key={index} src={image} alt={`Pants ${index}`} onClick={() => clothClick(image)} />
-      ))}
-    </div>
+      <div className="shop-categories">
+        <button 
+          className={`category-tab ${!selectedCategory ? 'active' : ''}`}
+          onClick={() => setSelectedCategory(null)}
+        >
+          All
+        </button>
+        <button 
+          className={`category-tab ${selectedCategory === 'pants' ? 'active' : ''}`}
+          onClick={() => wideScreen("pants")}
+        >
+          Pants
+        </button>
+        <button 
+          className={`category-tab ${selectedCategory === 'T-shirt' ? 'active' : ''}`}
+          onClick={() => wideScreen("T-shirt")}
+        >
+          T-Shirts
+        </button>
+        <button 
+          className={`category-tab ${selectedCategory === 'shirts' ? 'active' : ''}`}
+          onClick={() => wideScreen("shirts")}
+        >
+          Shirts
+        </button>
+      </div>
 
-    <div className='tshirt' onClick={() => wideScreen("T-shirt")}>
-      <h2>Tshirt</h2>
-      {(clothes["T-shirt"] || []).map((image, index) => (
-        <img key={index} src={image} alt={`Tshirt ${index}`} onClick={() => clothClick(image)} />
-      ))}
-    </div>
-
-    <div className='shirt' onClick={() => wideScreen("shirts")}>
-      <h2>Shirts</h2>
-      {(clothes.shirts || []).map((image, index) => (
-        <img key={index} src={image} alt={`Shirt ${index}`} onClick={() => clothClick(image)} />
-      ))}
-    </div>
-  </div>
-
-  {selectedImage && (
-    <div className='selected-image'>
-      <img src={selectedImage} alt="Selected cloth" 
-      draggable 
-      onDragStart={(e) => {
-        e.dataTransfer.setData('text/plain', selectedImage);
-      }}
-      />
-      <div className='selected-image-actions'>
-          <button className='back-button' onClick={() => {
-            setAlignLeft(false);
-            setSelectedImage(null);
-          }}>Back</button>
-          <button className='add-to-cart-button' onClick={() => addToCart(selectedImage)}>Add to Cart</button>
+      <div className="shop-wrapper" ref={categoryViewRef}>
+        <div className="products-grid">
+          {/* Display products based on selected category or all products */}
+          {!selectedCategory ? (
+            // Show all categories
+            <>
+              {/* Pants */}
+              {(clothes.pants || []).map((image, index) => (
+                <ProductCard 
+                  key={`pants-${index}`} 
+                  image={image} 
+                  productDetails={extractProductDetails(image)}
+                  onClick={() => clothClick(image)}
+                />
+              ))}
+              {/* T-Shirts */}
+              {(clothes["T-shirt"] || []).map((image, index) => (
+                <ProductCard 
+                  key={`tshirt-${index}`} 
+                  image={image} 
+                  productDetails={extractProductDetails(image)}
+                  onClick={() => clothClick(image)}
+                />
+              ))}
+              {/* Shirts */}
+              {(clothes.shirts || []).map((image, index) => (
+                <ProductCard 
+                  key={`shirt-${index}`} 
+                  image={image} 
+                  productDetails={extractProductDetails(image)}
+                  onClick={() => clothClick(image)}
+                />
+              ))}
+            </>
+          ) : (
+            // Show only the selected category
+            (clothes[selectedCategory] || []).map((image, index) => (
+              <ProductCard 
+                key={`${selectedCategory}-${index}`} 
+                image={image} 
+                productDetails={extractProductDetails(image)}
+                onClick={() => clothClick(image)}
+              />
+            ))
+          )}
         </div>
-    </div>
-  )}
-</div>
-<div className='bottom-navigation'>
-      <button>buy</button>
-      <button 
-      onDrop={(e)=> {
-        e.preventDefault();
-        const droppedimage = e.dataTransfer.getData('text/plain');
-        if (droppedimage) {
-          addToCart(droppedimage);
-          alert(`Added to cart!`); 
-
-        }
-      }}
-      onDragOver={(e) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'copy';
-      }}
-      onClick={() => {
-        navigate('/cart');
-      }}
-      >
-      🛒 Cart {getCartItemCount()} </button>
-      <button>profile</button>
-    </div>
-    {selectedCategory && !selectedImage && (
-      <div className='category-view' ref={categoryViewRef}>
-        <h2>{selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Collection</h2>
-        <div className='category-images'>
-          {(clothes[selectedCategory] || []).map((image, index) => {
-            const productDetails = extractProductDetails(image);
-            return (
-              <div key={index} className="product-card">
-                <img src={image} alt={`${selectedCategory} ${index}`} onClick={() => clothClick(image)}/>
-                <div className="product-details">
-                  <h3>{productDetails.name}</h3>
-                  <p className="product-price">{productDetails.price}</p>
-                  <p className="product-specs">
-                    {productDetails.color} | {productDetails.material}
-                  </p>
-                  <p className="product-sizes">Sizes: {productDetails.sizes}</p>
+      </div>
+      
+      {/* Product Detail Modal */}
+      {selectedImage && (
+        <div className="product-detail-modal">
+          <div className="modal-content">
+            <div className="modal-close" onClick={() => setSelectedImage(null)}>×</div>
+            <div className="modal-body">
+              <div className="product-image">
+                <img src={selectedImage} alt="Selected product" />
+              </div>
+              <div className="product-info">
+                <h2>{extractProductDetails(selectedImage).name}</h2>
+                <p className="product-brand">{extractProductDetails(selectedImage).brand}</p>
+                <div className="product-price">{extractProductDetails(selectedImage).price}</div>
+                <div className="product-specs">
+                  <div className="spec-item">
+                    <span className="spec-label">Material:</span> 
+                    <span className="spec-value">{extractProductDetails(selectedImage).material}</span>
+                  </div>
+                  <div className="spec-item">
+                    <span className="spec-label">Color:</span> 
+                    <span className="spec-value">{extractProductDetails(selectedImage).color}</span>
+                  </div>
+                  <div className="spec-item">
+                    <span className="spec-label">Available Sizes:</span> 
+                    <span className="spec-value">{extractProductDetails(selectedImage).sizes}</span>
+                  </div>
+                </div>
+                <div className="product-actions">
+                  <button className="add-to-cart-button" onClick={() => addToCart(selectedImage)}>
+                    Add to Cart
+                  </button>
+                  <button className="back-button" onClick={() => setSelectedImage(null)}>
+                    Continue Shopping
+                  </button>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          </div>
         </div>
+      )}
+      
+      <div className="bottom-navigation">
+        <button 
+          onDrop={(e) => {
+            e.preventDefault();
+            const droppedimage = e.dataTransfer.getData('text/plain');
+            if (droppedimage) {
+              addToCart(droppedimage);
+              alert(`Added to cart!`); 
+            }
+          }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+          }}
+          onClick={() => {
+            navigate('/cart');
+          }}
+        >
+          🛒 Cart {getCartItemCount()}
+        </button>
+        <button onClick={() => navigate('/profile')}>Profile</button>
       </div>
-    )}
     </motion.div>
   );
-}
+};
+
+// Product Card Component
+const ProductCard = ({ image, productDetails, onClick }) => {
+  return (
+    <motion.div 
+      className="product-card"
+      whileHover={{ y: -10 }}
+      onClick={onClick}
+    >
+      <div className="product-image">
+        <img src={image} alt={productDetails.name} />
+      </div>
+      <div className="product-card-info">
+        <h3 className="product-name">{productDetails.name}</h3>
+        <div className="product-card-meta">
+          <span className="product-price">{productDetails.price}</span>
+          <span className="product-color">{productDetails.color}</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 export default Clothes;
