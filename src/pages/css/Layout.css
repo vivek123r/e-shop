@@ -20,20 +20,106 @@ nav {
   left: 0;
   z-index: 1000;
   background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: space-between;
   backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(230, 230, 230, 0.7);
+  animation: navFadeIn 0.5s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated gradient accent for navigation */
+nav::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--primary-color), 
+    var(--secondary-color), 
+    #6b46c1, 
+    #00b4d8, 
+    var(--secondary-color), 
+    var(--primary-color)
+  );
+  background-size: 400% 100%;
+  animation: gradientMove 8s linear infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 400% 0%; }
+}
+
+@keyframes navFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scrolled navigation styles */
+nav.scrolled {
+  padding: 0.8rem 2rem;
+  background-color: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+nav.scrolled .nav-list li a {
+  padding: 8px 14px;
+}
+
+nav.scrolled .brand {
+  font-size: 1.6rem;
 }
 
 /* Brand/Logo Area */
 .brand {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--primary-color);
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-decoration: none;
+  letter-spacing: -0.5px;
+  position: relative;
+  transition: all 0.3s ease;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.brand:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.brand::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.brand:hover::after {
+  transform: scaleX(1);
 }
 
 /* Set up the nav list */
@@ -61,24 +147,134 @@ nav {
   display: block;
   border-radius: 8px;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 /* Hover effect for nav items */
 .nav-list li a:hover {
   color: var(--primary-color);
-  background-color: rgba(67, 97, 238, 0.1);
   transform: translateY(-2px);
 }
 
 /* Active state for nav items */
 .nav-list li a.active {
   color: var(--primary-color);
-  background-color: rgba(67, 97, 238, 0.15);
+}
+
+/* Animated underline effect */
+.nav-list li a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.nav-list li a:hover::after,
+.nav-list li a.active::after {
+  width: 80%;
 }
 
 /* Navigation spacing */
 nav {
   justify-content: space-between;
+}
+
+/* Add icons to the navigation links */
+.nav-list li a[href="/"] {
+  padding-left: 30px;
+  position: relative;
+}
+
+.nav-list li a[href="/"]:before {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9em;
+}
+
+.nav-list li a[href="/clothes"] {
+  padding-left: 30px;
+  position: relative;
+}
+
+.nav-list li a[href="/clothes"]:before {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9em;
+}
+
+.nav-list li a[href="/cart"] {
+  padding-left: 30px;
+  position: relative;
+}
+
+.nav-list li a[href="/cart"]:before {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9em;
+}
+
+.nav-list li a[href="/Login"] {
+  padding-left: 30px;
+  position: relative;
+}
+
+.nav-list li a[href="/Login"]:before {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9em;
+}
+
+.nav-list li a[href="/blogs"] {
+  padding-left: 30px;
+  position: relative;
+}
+
+.nav-list li a[href="/blogs"]:before {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9em;
+}
+
+.nav-list li a[href="/contact"] {
+  padding-left: 30px;
+  position: relative;
+}
+
+.nav-list li a[href="/contact"]:before {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9em;
+}
+
+.nav-list li a[href="/Tailers"] {
+  padding-left: 30px;
+  position: relative;
+}
+
+.nav-list li a[href="/Tailers"]:before {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9em;
 }
 
 .menu-toggle:hover span {
@@ -108,20 +304,85 @@ nav {
 }
 
 /* Responsive styles */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   nav {
     padding: 1rem;
   }
   
   .nav-list {
+    gap: 5px;
+  }
+  
+  .user-controls {
+    margin-left: 10px;
+    padding: 6px 12px;
+  }
+  
+  .logout-btn {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 0.8rem;
     flex-wrap: wrap;
-    justify-content: center;
   }
   
   .brand {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+  
+  .nav-list {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    padding-top: 10px;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    white-space: nowrap;
+    gap: 2px;
+  }
+  
+  .nav-list::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .nav-list li a {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  .user-controls {
+    order: 2;
+    margin-left: auto;
+    padding: 5px 10px;
+  }
+  
+  .user-info {
+    font-size: 13px;
+    max-width: 120px;
+  }
+  
+  .logout-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand {
     width: 100%;
     text-align: center;
-    margin-bottom: 10px;
+  }
+  
+  .user-controls {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8px;
   }
 }
 
@@ -130,6 +391,19 @@ nav {
   display: flex;
   align-items: center;
   gap: 15px;
+  margin-left: 20px;
+  padding: 8px 16px;
+  background: rgba(250, 250, 250, 0.5);
+  border-radius: 50px;
+  border: 1px solid rgba(230, 230, 230, 0.7);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.user-controls:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  transform: scale(1.02);
 }
 
 .user-info {
@@ -138,15 +412,20 @@ nav {
   display: flex;
   align-items: center;
   gap: 8px;
+  position: relative;
+  padding-left: 16px;
 }
 
 .user-info::before {
   content: '';
+  position: absolute;
+  left: 0;
   display: inline-block;
   width: 8px;
   height: 8px;
-  background-color: #4CAF50;
+  background: linear-gradient(135deg, #4CAF50, #8BC34A);
   border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
 }
 
 .user-info {
@@ -157,27 +436,28 @@ nav {
 }
 
 .logout-btn {
-  background-color: #4a90e2;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-weight: bold;
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 14px;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(67, 97, 238, 0.15);
   margin: 0;
+  letter-spacing: 0.3px;
 }
 
 .logout-btn:hover {
-  background-color: #3a7bc8;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 16px rgba(67, 97, 238, 0.25);
+  filter: brightness(1.05);
 }
 
 .logout-btn:active {
-  background-color: #2d6cb5;
   transform: translateY(0);
+  filter: brightness(0.95);
 }
 

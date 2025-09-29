@@ -6,6 +6,23 @@ import './css/Layout.css';
 const Layout = () => {
   const location = useLocation();
   const { currentUser, logout } = useAuth();
+  const [scrolled, setScrolled] = useState(false);
+  
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrolled]);
 
   // Function to handle logout
   const handleLogout = async () => {
@@ -18,35 +35,35 @@ const Layout = () => {
 
   return (
     <>
-      <nav>
+      <nav className={scrolled ? 'scrolled' : ''}>
         <Link to="/" className="brand">E-SHOP</Link>
         
         <ul className="nav-list">
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/" className={location.pathname === "/" ? "active" : ""}>Home</Link>
           </li>
           {currentUser ? (
             <>
               <li>
-                <Link to="/clothes">Shop</Link>
+                <Link to="/clothes" className={location.pathname === "/clothes" ? "active" : ""}>Shop</Link>
               </li>
               <li>
-                <Link to="/cart">Cart</Link>
+                <Link to="/cart" className={location.pathname === "/cart" ? "active" : ""}>Cart</Link>
               </li>
             </>
           ) : (
             <li>
-              <Link to="/Login">Login</Link>
+              <Link to="/Login" className={location.pathname === "/Login" ? "active" : ""}>Login</Link>
             </li>
           )}
           <li>
-            <Link to="/blogs">Blogs</Link>
+            <Link to="/blogs" className={location.pathname === "/blogs" ? "active" : ""}>Blogs</Link>
           </li>
           <li>
-            <Link to="/contact">Contact</Link>
+            <Link to="/contact" className={location.pathname === "/contact" ? "active" : ""}>Contact</Link>
           </li>
           <li>
-            <Link to="/Tailers">Tailors</Link>
+            <Link to="/Tailers" className={location.pathname === "/Tailers" ? "active" : ""}>Tailors</Link>
           </li>
         </ul>
         

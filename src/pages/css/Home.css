@@ -6,13 +6,13 @@
   flex-direction: column;
   overflow-x: hidden;
   background-color: var(--background-color);
-  padding-top: 80px; /* Space for the navbar */
+  padding-top: 0px; /* Space for the navbar */
 }
 
 /* Hero Section */
 .hero-section {
   position: relative;
-  height: 80vh;
+  height: 90vh;
   width: 100%;
   background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), 
               url('../../assets/background.png');
