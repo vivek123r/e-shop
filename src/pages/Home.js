@@ -5,12 +5,11 @@ import { useNavigate } from 'react-router-dom';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const categories = [
-  { name: 'clothes', img: `${API_URL}/images/clothes.jpg`, label: 'All Clothes' },
-  { name: 'modern', img: `${API_URL}/images/headphones.webp`, label: 'Modern' },
-  { name: 'classy', img: `${API_URL}/images/accessories.jpg`, label: 'Classy' },
-  { name: 'wedding', img: `${API_URL}/images/shoes.webp`, label: 'Wedding' },
-  { name: 'casual', img: `${API_URL}/images/books.avif`, label: 'Casual' },
-  { name: 'kids', img: `${API_URL}/images/toys.webp`, label: 'Kids' },
+  { name: 'modern', img: `${API_URL}/images/mordern.jpg`, label: 'Modern' },
+  { name: 'classy', img: `${API_URL}/images/classy.png`, label: 'Classy' },
+  { name: 'wedding', img: `${API_URL}/images/wedding.jpeg`, label: 'Wedding' },
+  { name: 'casual', img: `${API_URL}/images/casual.jpg`, label: 'Casual' },
+  { name: 'kids', img: `${API_URL}/images/kids.jpg`, label: 'Kids' },
 ];
 
 const Home = () => {

@@ -57,9 +57,6 @@ const Layout = () => {
             </li>
           )}
           <li>
-            <Link to="/blogs" className={location.pathname === "/blogs" ? "active" : ""}>Blogs</Link>
-          </li>
-          <li>
             <Link to="/contact" className={location.pathname === "/contact" ? "active" : ""}>Contact</Link>
           </li>
           <li>
