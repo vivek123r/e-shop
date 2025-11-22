@@ -7,8 +7,8 @@ import { useCart } from '../../contexts/CartContext';
 
 
 const Clothes = () => {
-  const [clothes, setClothes] = useState({});
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const { cartItems, addToCart, getCartItemCount } = useCart();
   let navigate = useNavigate();
@@ -17,8 +17,8 @@ const Clothes = () => {
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
   useEffect(() => {
-    console.log("Fetching clothes data from:", `${API_URL}/api/items/clothes`);
-    fetch(`${API_URL}/api/items/clothes`)
+    console.log("Fetching products from inventory API");
+    fetch(`${API_URL}/api/inventory`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -26,68 +26,22 @@ const Clothes = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("Clothes data received:", Object.keys(data));
-        setClothes(data);
+        console.log("Products received:", data.length);
+        // Filter only pants, shirts, and T-shirt categories
+        const clothesProducts = data.filter(p => 
+          p.category === 'pants' || p.category === 'shirts' || p.category === 'T-shirt'
+        );
+        setProducts(clothesProducts);
       })
       .catch((error) => {
-        console.error('Error fetching clothes:', error);
-        // Set empty data if there's an error
-        setClothes({});
+        console.error('Error fetching products:', error);
+        setProducts([]);
       });
   }, [API_URL]);
 
-  const clothClick = (imageUrl) => {
-    setSelectedImage(imageUrl);
+  const clothClick = (product) => {
+    setSelectedProduct(product);
   }
-  
-  // Extract product details from filename
-  const extractProductDetails = (imageUrl) => {
-    // Get the filename from the URL
-    const filename = imageUrl.split('/').pop();
-    
-    // Extract product details using regex or string operations
-    const nameParts = filename.split('-');
-    
-    // Basic structure: Brand-Type-Price-Material-Color-Sizes.jpg
-    const brand = nameParts[0];
-    
-    // Find the price (starts with $)
-    let price = "N/A";
-    let material = "N/A";
-    let color = "N/A";
-    let sizes = "N/A";
-    
-    // Look for price pattern
-    for (let i = 0; i < nameParts.length; i++) {
-      if (nameParts[i].includes('$') || nameParts[i].includes('.99')) {
-        price = nameParts[i].includes('$') ? nameParts[i] : `$${nameParts[i]}`;
-        
-        // The next parts are likely material, color, and sizes
-        if (i + 1 < nameParts.length) material = nameParts[i + 1];
-        if (i + 2 < nameParts.length) color = nameParts[i + 2];
-        
-        // Sizes might be multiple parts
-        if (i + 3 < nameParts.length) {
-          sizes = nameParts.slice(i + 3).join('-').replace('.jpg', '');
-        }
-        
-        break;
-      }
-    }
-    
-    // Create a product name from the first parts before price
-    const productName = nameParts.slice(0, nameParts.findIndex(part => part.includes('$') || part.includes('.99'))).join(' ');
-    
-    return {
-      name: productName || brand,
-      brand,
-      price,
-      material,
-      color,
-      sizes,
-      imageUrl
-    };
-  };
   
   const wideScreen = (category) => {
     setSelectedCategory(category);
@@ -96,6 +50,11 @@ const Clothes = () => {
         categoryViewRef.current.scrollIntoView({ behavior: 'smooth' });
       }
     }, 0);
+  }
+
+  // Get products by category
+  const getProductsByCategory = (category) => {
+    return products.filter(p => p.category === category);
   }
   
   return (
@@ -142,44 +101,21 @@ const Clothes = () => {
         <div className="products-grid">
           {/* Display products based on selected category or all products */}
           {!selectedCategory ? (
-            // Show all categories
-            <>
-              {/* Pants */}
-              {(clothes.pants || []).map((image, index) => (
-                <ProductCard 
-                  key={`pants-${index}`} 
-                  image={image} 
-                  productDetails={extractProductDetails(image)}
-                  onClick={() => clothClick(image)}
-                />
-              ))}
-              {/* T-Shirts */}
-              {(clothes["T-shirt"] || []).map((image, index) => (
-                <ProductCard 
-                  key={`tshirt-${index}`} 
-                  image={image} 
-                  productDetails={extractProductDetails(image)}
-                  onClick={() => clothClick(image)}
-                />
-              ))}
-              {/* Shirts */}
-              {(clothes.shirts || []).map((image, index) => (
-                <ProductCard 
-                  key={`shirt-${index}`} 
-                  image={image} 
-                  productDetails={extractProductDetails(image)}
-                  onClick={() => clothClick(image)}
-                />
-              ))}
-            </>
+            // Show all products
+            products.map((product, index) => (
+              <ProductCard 
+                key={product._id || index}
+                product={product}
+                onClick={() => clothClick(product)}
+              />
+            ))
           ) : (
             // Show only the selected category
-            (clothes[selectedCategory] || []).map((image, index) => (
+            getProductsByCategory(selectedCategory).map((product, index) => (
               <ProductCard 
-                key={`${selectedCategory}-${index}`} 
-                image={image} 
-                productDetails={extractProductDetails(image)}
-                onClick={() => clothClick(image)}
+                key={product._id || index}
+                product={product}
+                onClick={() => clothClick(product)}
               />
             ))
           )}
@@ -187,37 +123,39 @@ const Clothes = () => {
       </div>
       
       {/* Product Detail Modal */}
-      {selectedImage && (
+      {selectedProduct && (
         <div className="product-detail-modal">
           <div className="modal-content">
-            <div className="modal-close" onClick={() => setSelectedImage(null)}>×</div>
+            <div className="modal-close" onClick={() => setSelectedProduct(null)}>×</div>
             <div className="modal-body">
               <div className="product-image">
-                <img src={selectedImage} alt="Selected product" />
+                <img src={selectedProduct.image} alt={selectedProduct.name} />
               </div>
               <div className="product-info">
-                <h2>{extractProductDetails(selectedImage).name}</h2>
-                <p className="product-brand">{extractProductDetails(selectedImage).brand}</p>
-                <div className="product-price">{extractProductDetails(selectedImage).price}</div>
+                <h2>{selectedProduct.name}</h2>
+                <div className="product-price">₹{selectedProduct.price}</div>
+                {selectedProduct.description && (
+                  <p className="product-description">{selectedProduct.description}</p>
+                )}
                 <div className="product-specs">
                   <div className="spec-item">
-                    <span className="spec-label">Material:</span> 
-                    <span className="spec-value">{extractProductDetails(selectedImage).material}</span>
+                    <span className="spec-label">Stock:</span> 
+                    <span className="spec-value">{selectedProduct.stock} units available</span>
                   </div>
                   <div className="spec-item">
-                    <span className="spec-label">Color:</span> 
-                    <span className="spec-value">{extractProductDetails(selectedImage).color}</span>
-                  </div>
-                  <div className="spec-item">
-                    <span className="spec-label">Available Sizes:</span> 
-                    <span className="spec-value">{extractProductDetails(selectedImage).sizes}</span>
+                    <span className="spec-label">Category:</span> 
+                    <span className="spec-value">{selectedProduct.category}</span>
                   </div>
                 </div>
                 <div className="product-actions">
-                  <button className="add-to-cart-button" onClick={() => addToCart(selectedImage)}>
-                    Add to Cart
+                  <button 
+                    className="add-to-cart-button" 
+                    onClick={() => addToCart(selectedProduct.image)}
+                    disabled={selectedProduct.stock === 0}
+                  >
+                    {selectedProduct.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
                   </button>
-                  <button className="back-button" onClick={() => setSelectedImage(null)}>
+                  <button className="back-button" onClick={() => setSelectedProduct(null)}>
                     Continue Shopping
                   </button>
                 </div>
@@ -254,7 +192,7 @@ const Clothes = () => {
 };
 
 // Product Card Component
-const ProductCard = ({ image, productDetails, onClick }) => {
+const ProductCard = ({ product, onClick }) => {
   return (
     <motion.div 
       className="product-card"
@@ -262,13 +200,23 @@ const ProductCard = ({ image, productDetails, onClick }) => {
       onClick={onClick}
     >
       <div className="product-image">
-        <img src={image} alt={productDetails.name} />
+        <img src={product.image} alt={product.name} />
+        {product.stock < 10 && product.stock > 0 && (
+          <div className="stock-badge low-stock">
+            Only {product.stock} left!
+          </div>
+        )}
+        {product.stock === 0 && (
+          <div className="stock-badge out-of-stock">
+            Out of Stock
+          </div>
+        )}
       </div>
       <div className="product-card-info">
-        <h3 className="product-name">{productDetails.name}</h3>
+        <h3 className="product-name">{product.name}</h3>
         <div className="product-card-meta">
-          <span className="product-price">{productDetails.price}</span>
-          <span className="product-color">{productDetails.color}</span>
+          <span className="product-price">₹{product.price}</span>
+          <span className="product-stock">{product.stock} in stock</span>
         </div>
       </div>
     </motion.div>

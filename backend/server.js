@@ -2,11 +2,22 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const mongoose = require('mongoose');
+const Product = require('./models/Product');
+require('dotenv').config();
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
+// MongoDB Connection
+const MONGO_URI = process.env.MONGODB_URI;
+
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('✅ MongoDB Atlas Connected'))
+  .catch(err => console.error('❌ MongoDB Connection Error:', err));
 
 app.use(cors());
+app.use(express.json());
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -65,6 +76,64 @@ app.get('/item-lists', (req, res) => {
     const imageUrls = files.map(file => `http://localhost:${PORT}/images/${file}`);
     res.json(imageUrls);
   });
+});
+
+// ========== INVENTORY API ROUTES ==========
+
+// GET all products or by category
+app.get('/api/inventory', async (req, res) => {
+  try {
+    const { category } = req.query;
+    const filter = category ? { category } : {};
+    const products = await Product.find(filter);
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch inventory' });
+  }
+});
+
+// GET single product by ID
+app.get('/api/inventory/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch product' });
+  }
+});
+
+// POST create new product
+app.post('/api/inventory', async (req, res) => {
+  try {
+    const product = new Product(req.body);
+    await product.save();
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(400).json({ error: 'Failed to create product' });
+  }
+});
+
+// PUT update product (including stock)
+app.put('/api/inventory/:id', async (req, res) => {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    res.json(product);
+  } catch (error) {
+    res.status(400).json({ error: 'Failed to update product' });
+  }
+});
+
+// DELETE product
+app.delete('/api/inventory/:id', async (req, res) => {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id);
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    res.json({ message: 'Product deleted' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete product' });
+  }
 });
 
 app.listen(PORT, () => {
